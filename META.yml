@@ -1,0 +1,23 @@
+---
+name: Time-Elapsed
+version: 0.10
+author:
+  - 'Burak Gursoy <burak@cpan.org>'
+abstract: Displays the elapsed time as a human readable string.
+license: perl
+resources:
+  license: http://dev.perl.org/licenses/
+provides:
+  Time::Elapsed:
+    file: lib/Time/Elapsed.pm
+    version: 0.10
+  Time::Elapsed::Lang::EN:
+    file: lib/Time/Elapsed/Lang/EN.pm
+    version: 0.10
+  Time::Elapsed::Lang::TR:
+    file: lib/Time/Elapsed/Lang/TR.pm
+    version: 0.10
+generated_by: Module::Build version 0.2805
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.2.html
+  version: 1.2
