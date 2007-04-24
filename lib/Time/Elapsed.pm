@@ -14,7 +14,7 @@ use constant INDEX      => 0;
 use constant MULTIPLIER => 1;
 use Exporter ();
 
-$VERSION   = '0.11';
+$VERSION   = '0.12';
 @ISA       = qw( Exporter );
 @EXPORT_OK = qw( elapsed  );
 
