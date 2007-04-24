@@ -3,7 +3,7 @@ use strict;
 use utf8;
 use vars qw($VERSION);
 
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 sub singular {
    second  => q{saniye},
@@ -30,7 +30,7 @@ __END__
 
 =head1 NAME
 
-Time::Elapsed::Lang::EN - Turkish language file.
+Time::Elapsed::Lang::TR - Turkish language file.
 
 =head1 SYNOPSIS
 

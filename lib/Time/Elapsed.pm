@@ -14,7 +14,7 @@ use constant INDEX      => 0;
 use constant MULTIPLIER => 1;
 use Exporter ();
 
-$VERSION   = '0.10';
+$VERSION   = '0.11';
 @ISA       = qw( Exporter );
 @EXPORT_OK = qw( elapsed  );
 
@@ -47,8 +47,8 @@ sub elapsed {
    elsif ( $sec <= MINUTE ) { $data = $sec / MINUTE; $index = 'minute' }
    else {
       my $ismon = $sec < YEAR && $sec > MONTH;
-        if ( $ismon       ) { $data  = $sec / MONTH; $index = 'month'  }
-      else                  { $data  = $sec;         $index = 'second' }
+        if ( $ismon       ) { $data = $sec / MONTH;  $index = 'month'  }
+      else                  { $data = $sec;          $index = 'second' }
    }
 
    my $class    = _get_lang_class( $lang );
@@ -136,6 +136,14 @@ prints:
 
    21 days, 15 hours and 1 second
 
+If you set the language to turkish:
+
+   print elapsed( $t, 'TR' );
+
+prints:
+
+   21 gün, 15 saat ve 1 saniye
+
 =head1 DESCRIPTION
 
 This module transforms the elapsed seconds into a human readable string.
@@ -144,8 +152,9 @@ This module transforms the elapsed seconds into a human readable string.
 
 =head2 elapsed SECONDS [, LANG, TEMPLATE]
 
-C<SECONDS> must be a number representing the elapsed seconds. If it is
-absent, C<0> (zero) will be used.
+C<SECONDS> must be a positive number representing the elapsed seconds.
+If it is absent, C<0> (zero) will be used, but the returned value will
+be undef.
 
 The optional argument C<LANG> represents the language to use when
 converting the data to a string. Currently only english (C<EN>) and
@@ -166,7 +175,7 @@ L<PTools::Time::Elapsed>.
 This module' s source file is UTF-8 encoded (without a BOM) and it returns UTF-8
 values whenever possible.
 
-Currently, the module won't work with any Perl older than 5.6 because of
+Currently, the module won't work with any perl older than 5.6 because of
 the UTF-8 encoding and the usage of L<utf8> pragma. However, the pragma
 limitation can be by-passed with a C<%INC> trick under 5.005_04 (tested)
 and can be used with english language (default behavior), but any other
