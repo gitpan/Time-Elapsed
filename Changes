@@ -2,6 +2,10 @@ Revision history for Perl extension Time::Elapsed.
 
 Time zone is GMT+2.
 
+0.13 Wed Apr 25 20:47:27 2007
+   => Another fix for tests.
+   => Test::More is now required.
+
 0.12 Tue Apr 24 18:15:25 2007
    => Fixed 01-pod.t for legacy perls. This test is now
       skipped if perl version is < 5.008.

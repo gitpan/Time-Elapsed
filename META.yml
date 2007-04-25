@@ -1,16 +1,18 @@
 ---
 name: Time-Elapsed
-version: 0.12
+version: 0.13
 author:
   - 'Burak Gursoy <burak@cpan.org>'
 abstract: Displays the elapsed time as a human readable string.
 license: perl
 resources:
   license: http://dev.perl.org/licenses/
+requires:
+  Test::More: 0
 provides:
   Time::Elapsed:
     file: lib/Time/Elapsed.pm
-    version: 0.12
+    version: 0.13
   Time::Elapsed::Lang::EN:
     file: lib/Time/Elapsed/Lang/EN.pm
     version: 0.10

@@ -4,7 +4,9 @@ use Module::Build;
 Module::Build->new(
    module_name => 'Time::Elapsed',
    license     => 'perl',
-   requires    => {},
+   requires    => {
+      'Test::More' => 0,
+   },
    recommends  => {},
    sign        => 0,
    dist_author => 'Burak Gursoy <burak@cpan.org>',
