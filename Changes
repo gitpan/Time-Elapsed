@@ -2,6 +2,12 @@ Revision history for Perl extension Time::Elapsed.
 
 Time zone is GMT+2.
 
+0.14 Thu Apr 26 12:25:38 2007
+   => Another release for failures. It looks like
+      the cause is rounding error. I'm not sure
+      about the cause, since the tests pass on other
+      systems.
+
 0.13 Wed Apr 25 20:47:27 2007
    => Another fix for tests.
    => Test::More is now required.

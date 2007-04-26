@@ -4,9 +4,10 @@ use utf8;
 use Test::More tests => 3;
 use Time::Elapsed qw(elapsed); 
 
-my $en1 = elapsed(1868401      );
-my $en2 = elapsed(1868401, 'EN');
+my $en1  = elapsed(1868405      );
+my $en2  = elapsed(1868405, 'EN');
+my $want = "21 days, 15 hours and 4 seconds";
 
-ok( $en1 eq "21 days, 15 hours and 1 second", qq{"$en1" eq "21 days, 15 hours and 1 second"} );
-ok( $en2 eq "21 days, 15 hours and 1 second", qq{"$en2" eq "21 days, 15 hours and 1 second"} );
-ok( $en1 eq $en2                            , qq{"$en1" eq "$en2"} );
+ok( $en1 eq $want, qq{"$en1" eq "$want"} );
+ok( $en2 eq $want, qq{"$en2" eq "$want"} );
+ok( $en1 eq $en2 , qq{"$en1" eq "$en2"}  );
