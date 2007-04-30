@@ -2,6 +2,10 @@ Revision history for Perl extension Time::Elapsed.
 
 Time zone is GMT+2.
 
+0.15 Tue May  1 00:45:45 2007
+   => Fixed a calculation error.
+   => Updated Pod.
+
 0.14 Thu Apr 26 12:25:38 2007
    => Another release for failures. It looks like
       the cause is rounding error. I'm not sure

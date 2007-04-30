@@ -14,7 +14,7 @@ use constant INDEX      => 0;
 use constant MULTIPLIER => 1;
 use Exporter ();
 
-$VERSION   = '0.14';
+$VERSION   = '0.15';
 @ISA       = qw( Exporter );
 @EXPORT_OK = qw( elapsed  );
 
@@ -55,7 +55,7 @@ sub elapsed {
    my %singular = $class->singular;
    my %plural   = $class->plural;
    my %other    = $class->other;
-   my @parsed   = _parser( $index, $data );
+   my @parsed   = _fixer( _parser( $index, $data ) );
 
    my @str;
    POPULATE: foreach my $e ( @parsed ) {
@@ -87,11 +87,33 @@ sub elapsed {
    return $str[0]; # only a single value, no need for template/etc.
 }
 
+sub _fixer {
+   # There can be values like "60 seconds". _fixer() corrects this kind of error
+   my @raw = @_;
+   my(@fixed,$default,$add);
+
+   foreach my $e ( reverse @raw ) {
+      $default = $ELAPSED->{ $e->[INDEX] }[MULTIPLIER];
+      if ( $add ) {
+         $e->[MULTIPLIER] += $add; # we need a fix
+         $add              = 0;    # reset
+      }
+      if ( $e->[MULTIPLIER] >= $default) {
+         $add = int $e->[MULTIPLIER] / $default;
+         $e->[MULTIPLIER] -= $default * $add;
+      }
+      push @fixed, [ $e->[INDEX], $e->[MULTIPLIER] ];
+   }
+
+   return reverse @fixed;
+}
+
 sub _parser { # recursive formatter/parser
    my($id, $mul) = @_;
+   my $xmid = $ELAPSED->{$id}[INDEX];
    my @parsed;
-   push @parsed, [ $id,  int $mul ];
-   if ( my $xmid = $ELAPSED->{$id}[INDEX] ) {
+   push @parsed, [ $id,  $xmid ? int($mul) : sprintf('%.0f', $mul) ];
+   if ( $xmid ) {
       push @parsed, _parser(
          $NAMES[ $xmid - 1 ],
         ($mul - int $mul) * $ELAPSED->{$id}[MULTIPLIER]
@@ -147,6 +169,9 @@ prints:
 =head1 DESCRIPTION
 
 This module transforms the elapsed seconds into a human readable string.
+It can be used for (for example) rendering C<uptime> values into
+a human readable form. The resulting string will be an approximation.
+See the L</CAVEATS> section for more information.
 
 =head1 FUNCTIONS
 
@@ -163,23 +188,44 @@ standalone module in the C<Time::Elapsed::Lang::> namespace, so it is
 possible to extend the language support on your own.
 
 The optional argument C<TEMPLATE> can alter the generated string' s format.
-It must be a HASHref with several keys. This option is currently not
-documented.
-
-=head1 SEE ALSO
-
-L<PTools::Time::Elapsed>.
+This option is currently not documented.
 
 =head1 CAVEATS
 
-This module' s source file is UTF-8 encoded (without a BOM) and it returns UTF-8
-values whenever possible.
+=over 4
+
+=item *
+
+The calculation of the elapsed time is only an approximation, since these
+values are used internally:
+
+   1 Day   =  24 Hour
+   1 Month =  30 Day
+   1 Year  = 365 Day
+
+See
+L<"How Datetime Math is Done" in DateTime|DateTime/How Datetime Math is Done>
+for more information on this subject. Also see C<in_units()> method in
+L<DateTime::Duration>.
+
+=item *
+
+This module' s source file is UTF-8 encoded (without a BOM) and it returns
+UTF-8 values whenever possible.
+
+=item *
 
 Currently, the module won't work with any perl older than 5.6 because of
 the UTF-8 encoding and the usage of L<utf8> pragma. However, the pragma
 limitation can be by-passed with a C<%INC> trick under 5.005_04 (tested)
 and can be used with english language (default behavior), but any other
 language will probably need unicode support.
+
+=back
+
+=head1 SEE ALSO
+
+L<PTools::Time::Elapsed>, L<DateTime>, L<DateTime::Format::Duration>
 
 =head1 AUTHOR
 
