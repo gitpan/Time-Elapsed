@@ -2,6 +2,12 @@ Revision history for Perl extension Time::Elapsed.
 
 Time zone is GMT+2.
 
+0.16 Thu May  3 14:45:10 2007
+   => Pod fixes.
+   => False values will now return "0 second" instead of undef.
+      But undefined parameters will return undef. (RT#26908)
+   => New tests.
+
 0.15 Tue May  1 00:45:45 2007
    => Fixed a calculation error.
    => Updated Pod.

@@ -14,7 +14,7 @@ use constant INDEX      => 0;
 use constant MULTIPLIER => 1;
 use Exporter ();
 
-$VERSION   = '0.15';
+$VERSION   = '0.16';
 @ISA       = qw( Exporter );
 @EXPORT_OK = qw( elapsed  );
 
@@ -33,11 +33,21 @@ my @NAMES = sort  { $ELAPSED->{ $a }[INDEX] <=> $ELAPSED->{ $b }[INDEX] }
             keys %{ $ELAPSED };
 
 sub elapsed {
-   my $sec      = shift || 0;
+   my $sec      = shift;
+   return if not defined $sec;
    my $lang     = shift || 'EN';
    my $template = shift || '';
    my $data     = '';
+      $sec      = 0 if not $sec;
       $sec     += 0; # force number
+
+   # get language keys
+   my $class    = _get_lang_class( $lang );
+   my %singular = $class->singular;
+   my %plural   = $class->plural;
+   my %other    = $class->other;
+
+   return "0 $singular{second}" if not $sec;
 
    my $index;
       if ( $sec >= YEAR   ) { $data = $sec / YEAR  ; $index = 'year'   }
@@ -51,10 +61,6 @@ sub elapsed {
       else                  { $data = $sec;          $index = 'second' }
    }
 
-   my $class    = _get_lang_class( $lang );
-   my %singular = $class->singular;
-   my %plural   = $class->plural;
-   my %other    = $class->other;
    my @parsed   = _fixer( _parser( $index, $data ) );
 
    my @str;
@@ -177,18 +183,35 @@ See the L</CAVEATS> section for more information.
 
 =head2 elapsed SECONDS [, LANG, TEMPLATE]
 
-C<SECONDS> must be a positive number representing the elapsed seconds.
-If it is absent, C<0> (zero) will be used, but the returned value will
-be undef.
+=over 4
+
+=item *
+
+C<SECONDS> must be a number representing the elapsed seconds.
+If it is false, C<0> (zero) will be used. If it is not defined, C<undef>
+will be returned.
+
+=item *
 
 The optional argument C<LANG> represents the language to use when
-converting the data to a string. Currently only english (C<EN>) and
-turkish (C<TR>) are supported. However, the language section is really a
+converting the data to a string. The language section is really a
 standalone module in the C<Time::Elapsed::Lang::> namespace, so it is
-possible to extend the language support on your own.
+possible to extend the language support on your own. Currently
+supported languages are:
+
+   Parameter  Description
+   ---------  -----------------
+      EN      English (default)
+      TR      Turkish
+
+Language ids are case-insensitive. These are all same: C<en>, C<EN>, C<eN>.
+
+=item *
 
 The optional argument C<TEMPLATE> can alter the generated string' s format.
 This option is currently not documented.
+
+=back
 
 =head1 CAVEATS
 
