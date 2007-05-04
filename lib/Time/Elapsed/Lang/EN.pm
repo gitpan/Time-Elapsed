@@ -3,7 +3,7 @@ use strict;
 use utf8;
 use vars qw($VERSION);
 
-$VERSION = '0.10';
+$VERSION = '0.11';
 
 sub singular {
    second  => q{second},
@@ -24,7 +24,8 @@ sub plural {
 }
 
 sub other {
-   and => q{and},
+   and     => q{and},
+   zero    => q{zero seconds},
 }
 
 1;

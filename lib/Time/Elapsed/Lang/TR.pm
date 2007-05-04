@@ -1,9 +1,12 @@
 package Time::Elapsed::Lang::TR;
 use strict;
+use vars qw( $VERSION        );
+use subs qw( singular plural );
 use utf8;
-use vars qw($VERSION);
 
-$VERSION = '0.11';
+$VERSION = '0.12';
+
+*plural = \&singular;
 
 sub singular {
    second  => q{saniye},
@@ -14,10 +17,9 @@ sub singular {
    year    => q{yıl},
 }
 
-sub plural { &singular }
-
 sub other {
-   and => q{ve},
+   and     => q{ve},
+   zero    => q{sıfır saniye},
 }
 
 1;

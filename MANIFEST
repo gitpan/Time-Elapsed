@@ -6,7 +6,8 @@ t/02-pod-coverage.t
 t/03-simple.t
 t/04-simple-turkish.t
 t/05-false.t
-t/06-undef.t
+t/06-false-turkish.t
+t/07-undef.t
 Makefile.PL
 Build.PL
 Changes

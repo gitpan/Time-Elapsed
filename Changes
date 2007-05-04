@@ -2,6 +2,9 @@ Revision history for Perl extension Time::Elapsed.
 
 Time zone is GMT+2.
 
+0.17 Fri May  4 11:45:44 2007
+   => A fix for zero case per RT#26908. Thanks to Ron Savage.
+
 0.16 Thu May  3 14:45:10 2007
    => Pod fixes.
    => False values will now return "0 second" instead of undef.

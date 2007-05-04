@@ -14,7 +14,7 @@ use constant INDEX      => 0;
 use constant MULTIPLIER => 1;
 use Exporter ();
 
-$VERSION   = '0.16';
+$VERSION   = '0.17';
 @ISA       = qw( Exporter );
 @EXPORT_OK = qw( elapsed  );
 
@@ -47,7 +47,7 @@ sub elapsed {
    my %plural   = $class->plural;
    my %other    = $class->other;
 
-   return "0 $singular{second}" if not $sec;
+   return $other{zero} if not $sec;
 
    my $index;
       if ( $sec >= YEAR   ) { $data = $sec / YEAR  ; $index = 'year'   }
