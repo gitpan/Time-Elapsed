@@ -2,6 +2,16 @@ Revision history for Perl extension Time::Elapsed.
 
 Time zone is GMT+2.
 
+0.20 Wed May  9 00:41:49 2007
+   => Pod update.
+   => Internal cleanup.
+   => Fix for calculation.
+   => Removed template parameter, since it seems useless.
+   => Implemented a language cache.
+   => Added -compile import parameter.
+   => Added :all import key.
+   => Test::More 0.40 is now required for tests.
+
 0.17 Fri May  4 11:45:44 2007
    => A fix for zero case per RT#26908. Thanks to Ron Savage.
 

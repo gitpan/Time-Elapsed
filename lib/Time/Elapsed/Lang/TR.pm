@@ -4,22 +4,27 @@ use vars qw( $VERSION        );
 use subs qw( singular plural );
 use utf8;
 
-$VERSION = '0.12';
+$VERSION = '0.13';
 
 *plural = \&singular;
 
 sub singular {
-   second  => q{saniye},
-   minute  => q{dakika},
-   hour    => q{saat},
-   day     => q{gün},
-   month   => q{ay},
-   year    => q{yıl},
+   qw/
+   second  saniye
+   minute  dakika
+   hour    saat
+   day     gün
+   month   ay
+   year    yıl
+   /
 }
 
 sub other {
-   and     => q{ve},
-   zero    => q{sıfır saniye},
+   qw/
+   and       ve
+   ago       önce
+   /,
+   zero => q{sıfır saniye},
 }
 
 1;

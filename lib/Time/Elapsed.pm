@@ -1,7 +1,7 @@
 package Time::Elapsed;
 use strict;
 use utf8;
-use vars qw( $VERSION @ISA @EXPORT_OK );
+use vars qw( $VERSION @ISA @EXPORT_OK %EXPORT_TAGS );
 # time constants
 use constant SECOND     =>   1;
 use constant MINUTE     =>  60 * SECOND;
@@ -14,9 +14,10 @@ use constant INDEX      => 0;
 use constant MULTIPLIER => 1;
 use Exporter ();
 
-$VERSION   = '0.17';
-@ISA       = qw( Exporter );
-@EXPORT_OK = qw( elapsed  );
+$VERSION     = '0.20';
+@ISA         = qw( Exporter );
+@EXPORT_OK   = qw( elapsed  );
+%EXPORT_TAGS = ( all => [ @EXPORT_OK ] );
 
 # elapsed time formatter keys
 my $ELAPSED = {
@@ -32,65 +33,48 @@ my $ELAPSED = {
 my @NAMES = sort  { $ELAPSED->{ $a }[INDEX] <=> $ELAPSED->{ $b }[INDEX] }
             keys %{ $ELAPSED };
 
+my $LCACHE; # language cache
+
+sub import {
+   my $class   = shift;
+   my @raw     = @_;
+   my @exports;
+   foreach my $e ( @raw ) {
+      if ( $e eq '-compile' ) {
+         _compile_all();
+         next;
+      }
+      push @exports, $e;
+   }
+   $class->export_to_level( 1, $class, @exports );
+}
+
 sub elapsed {
-   my $sec      = shift;
-   return if not defined $sec;
-   my $lang     = shift || 'EN';
-   my $template = shift || '';
-   my $data     = '';
-      $sec      = 0 if not $sec;
-      $sec     += 0; # force number
+   my $sec  = shift;
+   return if ! defined $sec;
+   my $lang = shift || 'EN';
+      $sec  = 0 if !$sec; # can be empty string
+      $sec += 0;          # force number
 
-   # get language keys
-   my $class    = _get_lang_class( $lang );
-   my %singular = $class->singular;
-   my %plural   = $class->plural;
-   my %other    = $class->other;
+   my $l   = _get_lang( $lang ); # get language keys
+   return $l->{other}{zero} if !$sec;
+   my @rv  = _populate( $l, _fixer( _parser( _examine( abs $sec ) ) ) );
 
-   return $other{zero} if not $sec;
+   my $last = pop @rv;
 
-   my $index;
-      if ( $sec >= YEAR   ) { $data = $sec / YEAR  ; $index = 'year'   }
-   elsif ( $sec <= MONTH  ) { $data = $sec / MONTH ; $index = 'month'  }
-   elsif ( $sec <= DAY    ) { $data = $sec / DAY   ; $index = 'day'    }
-   elsif ( $sec <= HOUR   ) { $data = $sec / HOUR  ; $index = 'hour'   }
-   elsif ( $sec <= MINUTE ) { $data = $sec / MINUTE; $index = 'minute' }
-   else {
-      my $ismon = $sec < YEAR && $sec > MONTH;
-        if ( $ismon       ) { $data = $sec / MONTH;  $index = 'month'  }
-      else                  { $data = $sec;          $index = 'second' }
+   return join(', ', @rv) . " $l->{other}{and} $last" if @rv;
+   return $last; # only a single value, no need for template/etc.
+}
+
+sub _populate {
+   my($l, @parsed) = @_;
+   my(@buf, $type);
+   foreach my $e ( @parsed ) {
+      next if ! $e->[MULTIPLIER]; # disable zero values
+      $type = $e->[MULTIPLIER] > 1 ? 'plural' : 'singular';
+      push @buf, join(' ', $e->[MULTIPLIER], $l->{ $type }{ $e->[INDEX] } );
    }
-
-   my @parsed   = _fixer( _parser( $index, $data ) );
-
-   my @str;
-   POPULATE: foreach my $e ( @parsed ) {
-      next if not $e->[MULTIPLIER]; # disable zero values
-      push @str,  $e->[MULTIPLIER]
-                  .' '.
-                  (
-                     $e->[MULTIPLIER] > 1 ? $plural{   $e->[INDEX] }
-                                          : $singular{ $e->[INDEX] }
-                  )
-   }
-
-   if ( @str > 1 ) {
-      my $is_ok = $template && ref($template) && ref($template) eq 'HASH';
-      if ( $is_ok ) {
-         my $comma = $template->{comma} || ', ';
-         my $end   = $template->{end}   || ' <%AND%> <%LAST%>';
-         my $last  = pop @str;
-         my $and   = $other{and};
-            $end   =~ s{<%AND%>}{$and}xmsg;
-            $end   =~ s{<%LAST%>}{$last}xmsg;
-         return join($comma, @str) . $end;
-      }
-      else {
-         my $last  = pop @str;
-         return join(', ', @str) . " $other{and} $last";
-      }
-   }
-   return $str[0]; # only a single value, no need for template/etc.
+   return @buf;
 }
 
 sub _fixer {
@@ -100,46 +84,96 @@ sub _fixer {
 
    foreach my $e ( reverse @raw ) {
       $default = $ELAPSED->{ $e->[INDEX] }[MULTIPLIER];
+
       if ( $add ) {
          $e->[MULTIPLIER] += $add; # we need a fix
          $add              = 0;    # reset
       }
-      if ( $e->[MULTIPLIER] >= $default) {
+
+      if ( $e->[MULTIPLIER] >= $default ) {
          $add = int $e->[MULTIPLIER] / $default;
          $e->[MULTIPLIER] -= $default * $add;
       }
-      push @fixed, [ $e->[INDEX], $e->[MULTIPLIER] ];
+
+      unshift @fixed, [ $e->[INDEX], $e->[MULTIPLIER] ];
    }
 
-   return reverse @fixed;
+   return @fixed;
 }
 
 sub _parser { # recursive formatter/parser
    my($id, $mul) = @_;
-   my $xmid = $ELAPSED->{$id}[INDEX];
+   my $xmid      = $ELAPSED->{ $id }[INDEX];
    my @parsed;
    push @parsed, [ $id,  $xmid ? int($mul) : sprintf('%.0f', $mul) ];
+
    if ( $xmid ) {
       push @parsed, _parser(
          $NAMES[ $xmid - 1 ],
         ($mul - int $mul) * $ELAPSED->{$id}[MULTIPLIER]
       );
    }
+
    return @parsed;
 }
 
-sub _get_lang_class {
-   my $lang = shift;
-   if ( $lang =~ m{[^a-z_A-Z_0-9]}xms || $lang =~ m{ \A [0-9] }xms) {
+sub _examine {
+   my($sec) = @_;
+   return( year   => $sec / YEAR   ) if ( $sec >= YEAR   );
+   return( month  => $sec / MONTH  ) if ( $sec >= MONTH  );
+   return( day    => $sec / DAY    ) if ( $sec >= DAY    );
+   return( hour   => $sec / HOUR   ) if ( $sec >= HOUR   );
+   return( minute => $sec / MINUTE ) if ( $sec >= MINUTE );
+   return( second => $sec          );
+}
+
+sub _get_lang {
+   my($lang) = @_;
+   if ( $lang =~ m{[^a-z_A-Z_0-9]}xmso || $lang =~ m{ \A [0-9] }xmso) {
       die "Bad language identifier: $lang";
    }
    $lang = uc $lang;
+   _set_lang_cache( $lang ) if ! exists $LCACHE->{ $lang };
+   return $LCACHE->{ $lang };
+}
+
+sub _set_lang_cache {
+   my($lang) = @_;
    my $class = join '::', __PACKAGE__, 'Lang', $lang;
    my $file  = join('/', split /::/, $class ) . '.pm';
-   if ( not exists $INC{ $file } ) {
-      require $file;
+   require $file;
+   $LCACHE->{ $lang } = {
+      singular => { $class->singular },
+      plural   => { $class->plural   },
+      other    => { $class->other    },
+   };
+}
+
+sub _compile_all {
+   require File::Spec;
+   local *LDIR;
+   my($test, %lang);
+
+   # search lib paths
+   foreach my $lib ( @INC ) {
+      $test = File::Spec->catfile( $lib, qw/ Time Elapsed Lang /);
+      next if not -d $test;
+      opendir LDIR, $test or die "opendir($test): $!";
+
+      while ( my $file = readdir LDIR ) {
+         next if -d $file;
+         if ( $file =~ m{ \A (.+?) \. pm \z }xms ) {
+            $lang{ uc $1 }++;
+         }
+      }
+
+      closedir LDIR;
    }
-   return $class;
+
+   # compile language data
+   foreach my $id ( keys %lang ) {
+      _get_lang( $id );
+   }
 }
 
 1;
@@ -179,9 +213,30 @@ It can be used for (for example) rendering C<uptime> values into
 a human readable form. The resulting string will be an approximation.
 See the L</CAVEATS> section for more information.
 
+=head1 IMPORT PARAMETERS
+
+This module does not export anything by default. You have to
+specify import parameters. C<:all> key does not include
+C<import commands>.
+
+=head2 FUNCTIONS
+
+   elapsed
+
+=head2 KEYS
+
+   :all
+
+=head2 COMMANDS
+
+   Parameter   Description
+   ---------   -----------
+   -compile    All available language data will be compiled
+               and placed into an internal cache.
+
 =head1 FUNCTIONS
 
-=head2 elapsed SECONDS [, LANG, TEMPLATE]
+=head2 elapsed SECONDS [, LANG ]
 
 =over 4
 
@@ -205,11 +260,6 @@ supported languages are:
       TR      Turkish
 
 Language ids are case-insensitive. These are all same: C<en>, C<EN>, C<eN>.
-
-=item *
-
-The optional argument C<TEMPLATE> can alter the generated string' s format.
-This option is currently not documented.
 
 =back
 
@@ -248,7 +298,8 @@ language will probably need unicode support.
 
 =head1 SEE ALSO
 
-L<PTools::Time::Elapsed>, L<DateTime>, L<DateTime::Format::Duration>
+L<PTools::Time::Elapsed>, L<DateTime>, L<DateTime::Format::Duration>,
+L<Time::Duration>.
 
 =head1 AUTHOR
 

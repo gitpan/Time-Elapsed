@@ -3,28 +3,33 @@ use strict;
 use utf8;
 use vars qw($VERSION);
 
-$VERSION = '0.11';
+$VERSION = '0.12';
 
 sub singular {
-   second  => q{second},
-   minute  => q{minute},
-   hour    => q{hour},
-   day     => q{day},
-   month   => q{month},
-   year    => q{year},
+   qw/
+   second  second
+   minute  minute
+   hour    hour
+   day     day
+   month   month
+   year    year
+   /
 }
 
 sub plural {
-   second  => q{seconds},
-   minute  => q{minutes},
-   hour    => q{hours},
-   day     => q{days},
-   month   => q{months},
-   year    => q{years},
+   qw/
+   second  seconds
+   minute  minutes
+   hour    hours
+   day     days
+   month   months
+   year    years
+   /
 }
 
 sub other {
    and     => q{and},
+   ago     => q{ago},
    zero    => q{zero seconds},
 }
 

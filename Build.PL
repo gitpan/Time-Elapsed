@@ -5,7 +5,7 @@ Module::Build->new(
    module_name => 'Time::Elapsed',
    license     => 'perl',
    requires    => {
-      'Test::More' => 0,
+      'Test::More' => '0.40',
    },
    recommends  => {},
    sign        => 0,
