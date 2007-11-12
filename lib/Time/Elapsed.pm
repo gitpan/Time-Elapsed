@@ -13,8 +13,9 @@ use constant YEAR       => 365 * DAY;
 use constant INDEX      => 0;
 use constant MULTIPLIER => 1;
 use Exporter ();
+use Carp qw( croak );
 
-$VERSION     = '0.20';
+$VERSION     = '0.21';
 @ISA         = qw( Exporter );
 @EXPORT_OK   = qw( elapsed  );
 %EXPORT_TAGS = ( all => [ @EXPORT_OK ] );
@@ -128,12 +129,14 @@ sub _examine {
 }
 
 sub _get_lang {
-   my($lang) = @_;
-   if ( $lang =~ m{[^a-z_A-Z_0-9]}xmso || $lang =~ m{ \A [0-9] }xmso) {
-      die "Bad language identifier: $lang";
+   my $lang = shift || croak "_get_lang(): Language ID is missing";
+      $lang = uc $lang;
+   if ( ! exists $LCACHE->{ $lang } ) {
+      if ( $lang =~ m{[^a-z_A-Z_0-9]}xmso || $lang =~ m{ \A [0-9] }xmso) {
+         die "Bad language identifier: $lang";
+      }
+      _set_lang_cache( $lang );
    }
-   $lang = uc $lang;
-   _set_lang_cache( $lang ) if ! exists $LCACHE->{ $lang };
    return $LCACHE->{ $lang };
 }
 
@@ -231,7 +234,7 @@ C<import commands>.
 
    Parameter   Description
    ---------   -----------
-   -compile    All available language data will be compiled
+   -compile    All available language data will immediately be compiled
                and placed into an internal cache.
 
 =head1 FUNCTIONS
@@ -258,6 +261,7 @@ supported languages are:
    ---------  -----------------
       EN      English (default)
       TR      Turkish
+      DE      German
 
 Language ids are case-insensitive. These are all same: C<en>, C<EN>, C<eN>.
 

@@ -1,13 +1,10 @@
 lib/Time/Elapsed.pm
 lib/Time/Elapsed/Lang/EN.pm
 lib/Time/Elapsed/Lang/TR.pm
+lib/Time/Elapsed/Lang/DE.pm
 t/01-pod.t
 t/02-pod-coverage.t
 t/03-simple.t
-t/04-simple-turkish.t
-t/05-false.t
-t/06-false-turkish.t
-t/07-undef.t
 Makefile.PL
 Build.PL
 Changes

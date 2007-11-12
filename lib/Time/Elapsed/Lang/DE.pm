@@ -1,38 +1,38 @@
-package Time::Elapsed::Lang::EN;
+package Time::Elapsed::Lang::DE;
 use strict;
 use utf8;
 use vars qw( $VERSION );
 
-$VERSION = '0.13';
+$VERSION = '0.10';
 
 sub singular {
    qw/
-   second  second
-   minute  minute
-   hour    hour
-   day     day
-   month   month
-   year    year
+   second  Sekunde
+   minute  Minute
+   hour    Stunde
+   day     Tag
+   month   Monat
+   year    Jahr
    /
 }
 
 sub plural {
    qw/
-   second  seconds
-   minute  minutes
-   hour    hours
-   day     days
-   month   months
-   year    years
+   second  Sekunden
+   minute  Minuten
+   hour    Stunden
+   day     Tage
+   month   Monate
+   year    Jahre
    /
 }
 
 sub other {
    qw/
-   and     and
-   ago     ago
+   and     und
+   ago     vor
    /,
-   zero => q{zero seconds},
+   zero => q{Nullsekunden},
 }
 
 1;
@@ -45,7 +45,7 @@ __END__
 
 =head1 NAME
 
-Time::Elapsed::Lang::EN - English language file.
+Time::Elapsed::Lang::DE - German language file.
 
 =head1 SYNOPSIS
 

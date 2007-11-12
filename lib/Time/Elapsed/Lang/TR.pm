@@ -4,7 +4,7 @@ use vars qw( $VERSION        );
 use subs qw( singular plural );
 use utf8;
 
-$VERSION = '0.13';
+$VERSION = '0.14';
 
 *plural = \&singular;
 
@@ -21,8 +21,8 @@ sub singular {
 
 sub other {
    qw/
-   and       ve
-   ago       önce
+   and     ve
+   ago     önce
    /,
    zero => q{sıfır saniye},
 }
