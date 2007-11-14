@@ -1,4 +1,8 @@
 #!/usr/bin/env perl -w
+BEGIN {
+   # to test under legacy perl
+   $INC{'utf8.pm'} = 1 if $] < 5.006;
+}
 use strict;
 use utf8;
 use Test::More    qw( no_plan );

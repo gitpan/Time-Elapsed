@@ -2,6 +2,9 @@ Revision history for Perl extension Time::Elapsed.
 
 Time zone is GMT+2.
 
+0.22 Wed Nov 14 23:17:43 2007
+   => Updated the tests to run under legacy perl.
+
 0.21 Mon Nov 12 22:07:43 2007
    => Code cleanup.
    => German language file (can have errors).
