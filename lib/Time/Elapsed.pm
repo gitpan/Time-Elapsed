@@ -15,7 +15,7 @@ use constant MULTIPLIER => 1;
 use Exporter ();
 use Carp qw( croak );
 
-$VERSION     = '0.22';
+$VERSION     = '0.23';
 @ISA         = qw( Exporter );
 @EXPORT_OK   = qw( elapsed  );
 %EXPORT_TAGS = ( all => [ @EXPORT_OK ] );
@@ -29,6 +29,16 @@ my $ELAPSED = {
    day    => [  3,      24     ],
    month  => [  4,      30     ],
    year   => [  5,      12     ],
+};
+
+my $FIXER = { # formatter  for _fixer()
+   # name    multiplier
+   second => 60,
+   minute => 60,
+   hour   => 24,
+   day    => 30,
+   month  => 12,
+   year   =>  1,
 };
 
 my @NAMES = sort  { $ELAPSED->{ $a }[INDEX] <=> $ELAPSED->{ $b }[INDEX] }
@@ -84,7 +94,7 @@ sub _fixer {
    my(@fixed,$default,$add);
 
    foreach my $e ( reverse @raw ) {
-      $default = $ELAPSED->{ $e->[INDEX] }[MULTIPLIER];
+      $default = $FIXER->{ $e->[INDEX] };
 
       if ( $add ) {
          $e->[MULTIPLIER] += $add; # we need a fix
