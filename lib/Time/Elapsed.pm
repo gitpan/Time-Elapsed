@@ -15,7 +15,7 @@ use constant MULTIPLIER => 1;
 use Exporter ();
 use Carp qw( croak );
 
-$VERSION     = '0.23';
+$VERSION     = '0.24';
 @ISA         = qw( Exporter );
 @EXPORT_OK   = qw( elapsed  );
 %EXPORT_TAGS = ( all => [ @EXPORT_OK ] );
@@ -101,7 +101,8 @@ sub _fixer {
          $add              = 0;    # reset
       }
 
-      if ( $e->[MULTIPLIER] >= $default ) {
+      # year is the top-most element currently does not have any limits (def=1)
+      if ( $e->[MULTIPLIER] >= $default && $e->[INDEX] ne 'year' ) {
          $add = int $e->[MULTIPLIER] / $default;
          $e->[MULTIPLIER] -= $default * $add;
       }
@@ -321,7 +322,7 @@ Burak Gürsoy, E<lt>burakE<64>cpan.orgE<gt>
 
 =head1 COPYRIGHT
 
-Copyright 2007 Burak Gürsoy. All rights reserved.
+Copyright 2007-2008 Burak Gürsoy. All rights reserved.
 
 =head1 LICENSE
 
