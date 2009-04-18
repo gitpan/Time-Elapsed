@@ -4,7 +4,7 @@ use vars qw( $VERSION        );
 use subs qw( singular plural );
 use utf8;
 
-$VERSION = '0.14';
+$VERSION = '0.25';
 
 *plural = \&singular;
 
@@ -44,6 +44,9 @@ Time::Elapsed::Lang::TR - Turkish language file.
 Private module.
 
 =head1 DESCRIPTION
+
+This document describes version C<0.25> of C<Time::Elapsed::Lang::TR>
+released on C<18 April 2009>.
 
 Private module.
 

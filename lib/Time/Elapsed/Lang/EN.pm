@@ -3,7 +3,7 @@ use strict;
 use utf8;
 use vars qw( $VERSION );
 
-$VERSION = '0.13';
+$VERSION = '0.25';
 
 sub singular {
    qw/
@@ -52,6 +52,9 @@ Time::Elapsed::Lang::EN - English language file.
 Private module.
 
 =head1 DESCRIPTION
+
+This document describes version C<0.25> of C<Time::Elapsed::Lang::EN>
+released on C<18 April 2009>.
 
 Private module.
 

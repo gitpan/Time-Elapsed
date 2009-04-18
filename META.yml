@@ -1,28 +1,33 @@
 ---
 name: Time-Elapsed
-version: 0.24
+version: 0.25
 author:
   - 'Burak Gursoy <burak@cpan.org>'
 abstract: Displays the elapsed time as a human readable string.
 license: perl
 resources:
   license: http://dev.perl.org/licenses/
-requires:
+  repository: http://bitbucket.org/burak/cpan-time-elapsed/
+build_requires:
   Test::More: 0.40
 provides:
   Time::Elapsed:
     file: lib/Time/Elapsed.pm
-    version: 0.24
+    version: 0.25
   Time::Elapsed::Lang::DE:
     file: lib/Time/Elapsed/Lang/DE.pm
-    version: 0.10
+    version: 0.25
   Time::Elapsed::Lang::EN:
     file: lib/Time/Elapsed/Lang/EN.pm
-    version: 0.13
+    version: 0.25
   Time::Elapsed::Lang::TR:
     file: lib/Time/Elapsed/Lang/TR.pm
-    version: 0.14
-generated_by: Module::Build version 0.2808
+    version: 0.25
+no_index:
+  directory:
+    - tools
+    - t
+generated_by: Module::Build version 0.32
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
   version: 1.2
