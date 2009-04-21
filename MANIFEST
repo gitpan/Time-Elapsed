@@ -2,16 +2,17 @@ lib/Time/Elapsed.pm
 lib/Time/Elapsed/Lang/EN.pm
 lib/Time/Elapsed/Lang/TR.pm
 lib/Time/Elapsed/Lang/DE.pm
-t/03-simple.t
-Makefile.PL
+t/003-simple.t
 Build.PL
 Changes
 MANIFEST
 README
-META.yml
 SPEC
 builder/Build.pm
+builder/Build/Spec.pm
 t/200-all-modules-have-the-same-version.t
 t/201-pod.t
 t/202-pod-coverage.t
+Makefile.PL	Generated automatically
 LICENSE
+META.yml

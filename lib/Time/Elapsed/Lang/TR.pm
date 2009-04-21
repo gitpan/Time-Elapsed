@@ -4,7 +4,7 @@ use vars qw( $VERSION        );
 use subs qw( singular plural );
 use utf8;
 
-$VERSION = '0.26';
+$VERSION = '0.27';
 
 *plural = \&singular;
 
@@ -45,7 +45,7 @@ Private module.
 
 =head1 DESCRIPTION
 
-This document describes version C<0.26> of C<Time::Elapsed::Lang::TR>
+This document describes version C<0.27> of C<Time::Elapsed::Lang::TR>
 released on C<21 April 2009>.
 
 Private module.

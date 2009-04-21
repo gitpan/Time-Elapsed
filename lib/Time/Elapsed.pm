@@ -15,7 +15,7 @@ use constant MULTIPLIER => 1;
 use Exporter ();
 use Carp qw( croak );
 
-$VERSION = '0.26';
+$VERSION = '0.27';
 @ISA         = qw( Exporter );
 @EXPORT_OK   = qw( elapsed  );
 %EXPORT_TAGS = ( all => [ @EXPORT_OK ] );
@@ -222,7 +222,7 @@ prints:
 
 =head1 DESCRIPTION
 
-This document describes version C<0.26> of C<Time::Elapsed>
+This document describes version C<0.27> of C<Time::Elapsed>
 released on C<21 April 2009>.
 
 This module transforms the elapsed seconds into a human readable string.
