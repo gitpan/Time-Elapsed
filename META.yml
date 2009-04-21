@@ -1,6 +1,6 @@
 ---
 name: Time-Elapsed
-version: 0.25
+version: 0.26
 author:
   - 'Burak Gursoy <burak@cpan.org>'
 abstract: Displays the elapsed time as a human readable string.
@@ -13,19 +13,20 @@ build_requires:
 provides:
   Time::Elapsed:
     file: lib/Time/Elapsed.pm
-    version: 0.25
+    version: 0.26
   Time::Elapsed::Lang::DE:
     file: lib/Time/Elapsed/Lang/DE.pm
-    version: 0.25
+    version: 0.26
   Time::Elapsed::Lang::EN:
     file: lib/Time/Elapsed/Lang/EN.pm
-    version: 0.25
+    version: 0.26
   Time::Elapsed::Lang::TR:
     file: lib/Time/Elapsed/Lang/TR.pm
-    version: 0.25
+    version: 0.26
 no_index:
   directory:
-    - tools
+    - monolithic_version
+    - builder
     - t
 generated_by: Module::Build version 0.32
 meta-spec:

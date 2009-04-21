@@ -4,7 +4,7 @@ use vars qw( $VERSION        );
 use subs qw( singular plural );
 use utf8;
 
-$VERSION = '0.25';
+$VERSION = '0.26';
 
 *plural = \&singular;
 
@@ -45,10 +45,18 @@ Private module.
 
 =head1 DESCRIPTION
 
-This document describes version C<0.25> of C<Time::Elapsed::Lang::TR>
-released on C<18 April 2009>.
+This document describes version C<0.26> of C<Time::Elapsed::Lang::TR>
+released on C<21 April 2009>.
 
 Private module.
+
+=head1 METHODS
+
+=head2 singular
+
+=head2 plural
+
+=head2 other
 
 =head1 SEE ALSO
 

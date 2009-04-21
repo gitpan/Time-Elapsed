@@ -3,7 +3,7 @@ use strict;
 use utf8;
 use vars qw( $VERSION );
 
-$VERSION = '0.25';
+$VERSION = '0.26';
 
 sub singular {
    qw/
@@ -53,10 +53,18 @@ Private module.
 
 =head1 DESCRIPTION
 
-This document describes version C<0.25> of C<Time::Elapsed::Lang::EN>
-released on C<18 April 2009>.
+This document describes version C<0.26> of C<Time::Elapsed::Lang::EN>
+released on C<21 April 2009>.
 
 Private module.
+
+=head1 METHODS
+
+=head2 singular
+
+=head2 plural
+
+=head2 other
 
 =head1 SEE ALSO
 
