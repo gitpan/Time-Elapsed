@@ -1,7 +1,7 @@
 package Time::Elapsed;
 use strict;
 use utf8;
-use vars qw( $VERSION @ISA @EXPORT_OK %EXPORT_TAGS );
+use vars qw( $VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS );
 # time constants
 use constant SECOND     =>   1;
 use constant MINUTE     =>  60 * SECOND;
@@ -12,33 +12,28 @@ use constant YEAR       => 365 * DAY;
 # elapsed data fields
 use constant INDEX      => 0;
 use constant MULTIPLIER => 1;
+use constant FIXER      => 2;
 use Exporter ();
 use Carp qw( croak );
 
-$VERSION = '0.27';
+$VERSION = '0.29';
 @ISA         = qw( Exporter );
-@EXPORT_OK   = qw( elapsed  );
-%EXPORT_TAGS = ( all => [ @EXPORT_OK ] );
+@EXPORT      = qw( elapsed  );
+%EXPORT_TAGS = ( all => [ @EXPORT, @EXPORT_OK ] );
 
 # elapsed time formatter keys
 my $ELAPSED = {
-   # name      index  multiplier
-   second => [  0,      60     ],
-   minute => [  1,      60     ],
-   hour   => [  2,      60     ],
-   day    => [  3,      24     ],
-   month  => [  4,      30     ],
-   year   => [  5,      12     ],
+   # name       index   multiplier   fixer
+   second => [  0,      60,          60    ],
+   minute => [  1,      60,          60    ],
+   hour   => [  2,      60,          24    ],
+   day    => [  3,      24,          30    ],
+   month  => [  4,      30,          12    ],
+   year   => [  5,      12,           1    ],
 };
 
 my $FIXER = { # formatter  for _fixer()
-   # name    multiplier
-   second => 60,
-   minute => 60,
-   hour   => 24,
-   day    => 30,
-   month  => 12,
-   year   =>  1,
+   map { $_ => $ELAPSED->{$_}[FIXER] } keys %{ $ELAPSED }
 };
 
 my @NAMES = sort  { $ELAPSED->{ $a }[INDEX] <=> $ELAPSED->{ $b }[INDEX] }
@@ -222,8 +217,8 @@ prints:
 
 =head1 DESCRIPTION
 
-This document describes version C<0.27> of C<Time::Elapsed>
-released on C<21 April 2009>.
+This document describes version C<0.29> of C<Time::Elapsed>
+released on C<23 April 2009>.
 
 This module transforms the elapsed seconds into a human readable string.
 It can be used for (for example) rendering C<uptime> values into
