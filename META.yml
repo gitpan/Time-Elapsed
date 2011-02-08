@@ -1,34 +1,36 @@
 ---
-name: Time-Elapsed
-version: 0.29
+abstract: 'Displays the elapsed time as a human readable string.'
 author:
   - 'Burak Gursoy <burak@cpan.org>'
-abstract: Displays the elapsed time as a human readable string.
-license: perl
-resources:
-  license: http://dev.perl.org/licenses/
-  repository: http://bitbucket.org/burak/cpan-time-elapsed/
 build_requires:
   Test::More: 0.40
-provides:
-  Time::Elapsed:
-    file: lib/Time/Elapsed.pm
-    version: 0.29
-  Time::Elapsed::Lang::DE:
-    file: lib/Time/Elapsed/Lang/DE.pm
-    version: 0.29
-  Time::Elapsed::Lang::EN:
-    file: lib/Time/Elapsed/Lang/EN.pm
-    version: 0.29
-  Time::Elapsed::Lang::TR:
-    file: lib/Time/Elapsed/Lang/TR.pm
-    version: 0.29
+configure_requires:
+  Module::Build: 0.36
+generated_by: 'Module::Build version 0.3607'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Time-Elapsed
 no_index:
   directory:
     - monolithic_version
     - builder
     - t
-generated_by: Module::Build version 0.32
-meta-spec:
-  url: http://module-build.sourceforge.net/META-spec-v1.2.html
-  version: 1.2
+provides:
+  Time::Elapsed:
+    file: lib/Time/Elapsed.pm
+    version: 0.31
+  Time::Elapsed::Lang::DE:
+    file: lib/Time/Elapsed/Lang/DE.pm
+    version: 0.31
+  Time::Elapsed::Lang::EN:
+    file: lib/Time/Elapsed/Lang/EN.pm
+    version: 0.31
+  Time::Elapsed::Lang::TR:
+    file: lib/Time/Elapsed/Lang/TR.pm
+    version: 0.31
+resources:
+  license: http://dev.perl.org/licenses/
+  repository: http://bitbucket.org/burak/cpan-time-elapsed/
+version: 0.31
